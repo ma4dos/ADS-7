@@ -11,6 +11,7 @@ void Train::addCar(bool light) {
   newCar->light = light;
   newCar->next = nullptr;
   newCar->prev = nullptr;
+
   if (first == nullptr) {
     first = newCar;
     newCar->next = newCar;
