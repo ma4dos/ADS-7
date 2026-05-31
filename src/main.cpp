@@ -32,15 +32,15 @@ void writeGnuplot(const std::string &fname) {
   scr << "fit f1(x) 'result/data.txt' i 0 u 1:2 via a1,b1\n";
   scr << "fit f2(x) 'result/data.txt' i 1 u 1:2 via a2,b2\n";
   scr << "fit f3(x) 'result/data.txt' i 2 u 1:2 via a3,b3\n";
-  scr << "plot 'result/data.txt' i 0 u 1:2 w p pt 7 lc 'red'";
-  scr << " title 'All OFF', f1(x) w l lc 'red'";
-  scr << " title sprintf('Fit: %.0f*n+%.0f',a1,b1),";
-  scr << " 'result/data.txt' i 1 u 1:2 w p pt 9 lc 'green'";
-  scr << " title 'All ON', f2(x) w l lc 'green'";
-  scr << " title sprintf('Fit: %.0f*n+%.0f',a2,b2),";
-  scr << " 'result/data.txt' i 2 u 1:2 w p pt 5 lc 'blue'";
-  scr << " title 'Random', f3(x) w l lc 'blue'";
-  scr << " title sprintf('Fit: %.0f*n+%.0f',a3,b3)\n";
+  scr << "plot 'result/data.txt' i 0 u 1:2 w p pt 7 lc 'red'"
+      << " title 'All OFF', f1(x) w l lc 'red'"
+      << " title sprintf('Fit: %.0f*n+%.0f',a1,b1),"
+      << " 'result/data.txt' i 1 u 1:2 w p pt 9 lc 'green'"
+      << " title 'All ON', f2(x) w l lc 'green'"
+      << " title sprintf('Fit: %.0f*n+%.0f',a2,b2),"
+      << " 'result/data.txt' i 2 u 1:2 w p pt 5 lc 'blue'"
+      << " title 'Random', f3(x) w l lc 'blue'"
+      << " title sprintf('Fit: %.0f*n+%.0f',a3,b3)\n";
   scr.close();
 }
 
@@ -91,4 +91,3 @@ int main() {
   std::cout << "Done. Plot saved to result/plot.png" << std::endl;
   return 0;
 }
-
