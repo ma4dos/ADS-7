@@ -1,69 +1,69 @@
 // Copyright 2021 NNTU-CS
 #include "train.h"
-#include <cstdlib>
 
-Train::Train() : countOp(0), first(nullptr) {}
+Train::Train() {
+  first = nullptr;
+  countOp = 0;
+}
 
 void Train::addCar(bool light) {
-  Car* newCar = new Car{light, nullptr, nullptr};
-  if (!first) {
+  Car *newCar = new Car;
+  newCar->light = light;
+  newCar->next = nullptr;
+  newCar->prev = nullptr;
+  if (first == nullptr) {
     first = newCar;
-    first->next = first;
-    first->prev = first;
+    newCar->next = newCar;
+    newCar->prev = newCar;
   } else {
+    Car *last = first->prev;
+    last->next = newCar;
+    newCar->prev = last;
     newCar->next = first;
-    newCar->prev = first->prev;
-    first->prev->next = newCar;
     first->prev = newCar;
   }
 }
 
 int Train::getLength() {
-  if (!first) return 0;
-  if (first->next == first) return 1;
-
-  countOp = 0;
-  Car* current = first;
-
-  if (current->light) {
-    current->light = false;
-    current = current->next;
-    countOp++;
-  }
-
-  int steps = 0;
-  bool found = false;
-
-  while (!found) {
-    steps++;
-    current = current->next;
-    countOp++;
-
-    if (!current->light) {
-      current->light = true;
-
-      for (int i = 0; i < steps; i++) {
-        current = current->prev;
-        countOp++;
+  if (first == nullptr) return 0;
+  if (first->light == false && first->next->light == false) {
+    first->light = true;
+    Car *cur = first->next;
+    int len = 1;
+    ++countOp;
+    while (cur != first) {
+      cur = cur->next;
+      ++countOp;
+      ++len;
+    }
+    for (int i = 0; i < len; ++i) {
+      cur = cur->prev;
+      ++countOp;
+    }
+    return len;
+  } else {
+    Car *cur = first;
+    cur->light = true;
+    int k = 1;
+    while (true) {
+      for (int i = 0; i < k; ++i) {
+        cur = cur->next;
+        ++countOp;
       }
-
-      if (current->light) {
-        found = true;
-      } else {
-        current->light = false;
-        current = current->next;
-        countOp++;
-        steps = 0;
+      cur->light = false;
+      for (int i = 0; i < k; ++i) {
+        cur = cur->prev;
+        ++countOp;
       }
+      if (first->light == false) {
+        first->light = true;
+        return k;
+      }
+      ++k;
     }
   }
-
-  return steps;
 }
 
 int Train::getOpCount() {
   return countOp;
 }
-
-  
- 
