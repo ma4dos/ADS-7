@@ -72,8 +72,10 @@ int main() {
     }
     {
       Train t;
-      for (int i = 0; i < n; i++)
-        t.addCar(std::rand() % 2 == 1);  // NOLINT(runtime/threadsafe_fn)
+      for (int i = 0; i < n; i++) {
+        // NOLINTNEXTLINE(runtime/threadsafe_fn)
+        t.addCar(std::rand() % 2 == 1);
+      }
       t.getLength();
       opsRand[idx] = t.getOpCount();
     }
@@ -91,3 +93,5 @@ int main() {
   std::cout << "Done. Plot saved to result/plot.png" << std::endl;
   return 0;
 }
+  
+     
