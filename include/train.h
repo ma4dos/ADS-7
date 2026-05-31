@@ -1,9 +1,8 @@
-// Copyright 2022 NNTU-CS
 #ifndef INCLUDE_TRAIN_H_
 #define INCLUDE_TRAIN_H_
 
 class Train {
- private:
+private:
   struct Car {
     bool light;
     Car *next;
@@ -11,11 +10,11 @@ class Train {
   };
   int countOp;
   Car *first;
- public:
+public:
   Train();
   void addCar(bool light);
   int getLength();
   int getOpCount();
 };
 
-#endif  // INCLUDE_TRAIN_H_
+#endif
