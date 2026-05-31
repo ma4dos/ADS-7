@@ -28,7 +28,7 @@ int Train::getLength() {
   if (first == nullptr) return 0;
   if (first->light == false && first->next->light == false) {
     first->light = true;
-    Car *cur = first->next;
+    const Car *cur = first->next;  // cppcheck-suppress constVariablePointer
     int len = 1;
     ++countOp;
     while (cur != first) {
