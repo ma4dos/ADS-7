@@ -1,4 +1,4 @@
-// Copyright 2025 NNTU-CS
+// Copyright 2022 NNTU-CS
 #ifndef INCLUDE_TRAIN_H_
 #define INCLUDE_TRAIN_H_
 
@@ -11,10 +11,8 @@ class Train {
   };
   int countOp;
   Car *first;
-  int size;
  public:
   Train();
-  ~Train();
   void addCar(bool light);
   int getLength();
   int getOpCount();
