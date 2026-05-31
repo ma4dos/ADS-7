@@ -1,80 +1,75 @@
 // Copyright 2021 NNTU-CS
 #include "train.h"
+#include <cstdlib>
 
-Train::Train() {
-  first = nullptr;
-  countOp = 0;
-}
+Train::Train() : countOp(0), first(nullptr) {}
 
 void Train::addCar(bool light) {
-  Car *newCar = new Car;
-  newCar->light = light;
-  newCar->next = nullptr;
-  newCar->prev = nullptr;
-  if (first == nullptr) {
+  Car* newCar = new Car{light, nullptr, nullptr};
+  if (!first) {
     first = newCar;
-    newCar->next = newCar;
-    newCar->prev = newCar;
+    first->next = first;
+    first->prev = first;
   } else {
-    Car *last = first->prev;
-    last->next = newCar;
-    newCar->prev = last;
     newCar->next = first;
+    newCar->prev = first->prev;
+    first->prev->next = newCar;
     first->prev = newCar;
   }
 }
 
 int Train::getLength() {
-  if (first == nullptr) return 0;
-  Car *cur = first;
+  if (!first) return 0;
+  if (first->next == first) return 1;
 
-  if (cur->light == false) {
-    cur->light = true;
-    int steps = 0;
-    Car *temp = cur;
-    do {
-      temp = temp->next;
-      ++countOp;
-      ++steps;
-    } while (temp->light == false);
-    if (temp == cur) {
-      cur->light = false;
-      for (int i = 0; i < steps; ++i) {
-        cur = cur->prev;
-        ++countOp;
+  countOp = 0;
+  Car* current = first;
+
+  // Шаг 1: выключаем свет в стартовом вагоне (если включён)
+  if (current->light) {
+    current->light = false;
+    current = current->next;
+    countOp++;
+  }
+
+  int steps = 0;
+  bool found = false;
+
+  while (!found) {
+    steps++;
+    current = current->next;
+    countOp++;
+
+    // Двигаемся вперёд, считая шаги, пока не вернёмся к вагону с выключенным светом
+    if (!current->light) {
+      // Включаем свет — это метка, что мы здесь уже были
+      current->light = true;
+
+      // Возвращаемся на steps шагов назад
+      for (int i = 0; i < steps; i++) {
+        current = current->prev;
+        countOp++;
       }
-      return steps;
-    } else {
-      for (int i = 0; i < steps; ++i) {
-        temp = temp->prev;
-        ++countOp;
+
+      // Если стартовый вагон теперь светится — значит, мы обошли весь круг
+      if (current->light) {
+        found = true;
+      } else {
+        // Иначе продолжаем — выключаем стартовый, идём дальше
+        current->light = false;
+        current = current->next;
+        countOp++;
+        steps = 0;
       }
-      cur = temp;
     }
   }
 
-  cur = first;
-  cur->light = true;
-  int k = 1;
-  while (true) {
-    for (int i = 0; i < k; ++i) {
-      cur = cur->next;
-      ++countOp;
-    }
-    cur->light = false;
-    for (int i = 0; i < k; ++i) {
-      cur = cur->prev;
-      ++countOp;
-    }
-    if (first->light == false) {
-      int len = k;
-      first->light = true;
-      return len;
-    }
-    ++k;
-  }
+  return steps;
 }
 
 int Train::getOpCount() {
   return countOp;
 }
+
+  
+ 
