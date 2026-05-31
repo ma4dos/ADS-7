@@ -45,7 +45,7 @@ void writeGnuplot(const std::string &fname) {
 }
 
 int main() {
-  srand(time(nullptr));
+  std::srand(std::time(nullptr));
   const int MAX_N = 200;
   const int STEP = 10;
   const int TESTS = 19;
@@ -73,7 +73,7 @@ int main() {
     {
       Train t;
       for (int i = 0; i < n; i++)
-        t.addCar(rand() % 2 == 1);
+        t.addCar(std::rand() % 2 == 1);  // NOLINT(runtime/threadsafe_fn)
       t.getLength();
       opsRand[idx] = t.getOpCount();
     }
